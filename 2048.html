@@ -1,0 +1,255 @@
+<!doctype html>
+<html>
+<head>
+<script type="text/javascript" src="jquery/jquery-2.2.0.min.js"></script>
+<style>
+.arow{
+ width: 	305px;
+}
+.acell{
+ width: 	65px;
+ height: 	50px;
+ background-color: white;
+ border: 	2px solid #8c7373;
+ margin:	1px;
+ float:		left;
+ text-align:	center;
+ font: 		25px Arial bold;
+ padding-top:	18px;
+}
+#console{
+ height: 	40px;
+ width:  	305;
+ font: 	 	25px Arial bold;
+}
+</style>
+<script type="text/javascript">
+var KEY = {
+   LEFT : 37,
+   UP	: 38,
+   RIGHT: 39,
+   DOWN	: 40
+},
+v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+size = 4;
+function getDir(dir){
+ var result = "";
+ switch(dir){
+  case KEY.LEFT:
+   result = "LEFT";
+  break; 
+  case KEY.UP:
+   result = "UP";
+  break; 
+  case KEY.RIGHT:
+   result = "RIGHT";
+  break; 
+  case KEY.DOWN:
+   result = "DOWN";
+  break; 
+ }
+ return result;
+}
+function moveLeft_v_1(){
+ for(var i=0;i<size;i++){
+  for(var j=size;j--;){
+   if((j-1)>=0){
+    if(v_table[i][j-1]===v_table[i][j]){ 
+     //v_table[i][j-1]=v_table[i][j-1]+v_table[i][j];
+     v_table[i][j-1]*=2;
+     v_table[i][j]=0;
+    }else if(v_table[i][j-1]===0) {
+     v_table[i][j-1]=v_table[i][j];
+     v_table[i][j]=0;
+    }
+   }
+  }
+  for(var j=0;j<size;j++){
+   if(j<(size-1) && v_table[i][j]===0){
+     v_table[i][j]=v_table[i][j+1];
+     v_table[i][j+1]=0;
+   } 
+  }
+ }
+}
+function moveRight(){
+ for(var i=0;i<size;i++){
+  for(var j=0;j<size;j++){
+   if((j+1)<size){
+    if(v_table[i][j+1]===v_table[i][j]){ 
+     v_table[i][j+1]*=2;
+     v_table[i][j]=0;
+    }
+   }
+  }
+  for(var j=0;j<size;j++){
+   if(j<(size-1) && v_table[i][j+1]===0){
+     v_table[i][j+1]=v_table[i][j];
+     v_table[i][j]=0;
+   } 
+  }
+ }
+}
+function moveUp(){
+ for(var i=size;i--;){
+  for(var j=0;j<size;j++){
+   if((i-1)>=0)
+    if(v_table[i][j]===v_table[i-1][j]){
+     v_table[i-1][j]*=2; 
+     v_table[i][j]=0;
+    }else if(v_table[i-1][j]===0){
+     v_table[i-1][j]=v_table[i][j];
+     v_table[i][j]=0;
+    }
+  }
+ }
+ for(var i=size;i--;){
+  for(var j=0;j<size;j++){
+    if((i-1)>=0 && v_table[i-1][j]===0) {
+      v_table[i-1][j]=v_table[i][j];
+      v_table[i][j]=0;
+    }
+  }
+ }
+}
+function moveDown(){
+ for(var i=0;i<size;i++){
+  for(var j=0;j<size;j++){
+   if((i+1)<size){
+    if(v_table[i+1][j]===v_table[i][j]){ 
+     v_table[i+1][j]*=2;
+     v_table[i][j]=0;
+    }else if(v_table[i+1][j]===0){
+     v_table[i+1][j]=v_table[i][j];
+     v_table[i][j]=0;
+    }
+   }
+  }
+ }
+ for(var i=0;i<size;i++){
+  for(var j=0;j<size;j++){
+   if((i+1)<size && v_table[i+1][j]===0){
+     v_table[i+1][j]=v_table[i][j];
+     v_table[i][j]=0;
+   }
+  }
+ }
+}
+function moveTable(direction){
+ $('#console').text(getDir(direction));
+  switch(direction){
+  case KEY.LEFT:
+   moveLeft_v_1();   
+  break; 
+  case KEY.RIGHT:
+   moveRight();
+  break; 
+  case KEY.UP:
+   moveUp();
+  break; 
+  case KEY.DOWN:
+   moveDown();
+  break; 
+ }
+ refreshScreen();
+ setValue(getCoordinates().join(""),2);
+ console.log(v_table.join(""));
+}
+function refreshScreen(){
+ for(var i=0;i<size;i++){
+  for(var j=size;j--;){
+   $("#"+i+""+j).text((v_table[i][j]==0 ? "":v_table[i][j]));
+  }
+ }
+}
+function setValue(cell,value){
+ var coord = cell.split("");
+ v_table[coord[0]][coord[1]]=value;
+ $("#"+cell).text(value);
+ //console.log(v_table.join(""));
+}
+function checkKey(e) {
+ e = e || window.event;
+ if(e.keyCode===KEY.LEFT || e.keyCode===KEY.UP || e.keyCode===KEY.RIGHT || e.keyCode===KEY.DOWN)
+   moveTable(e.keyCode);
+}
+function totheUpTest(){
+ setValue("00",2);
+ setValue("10",2);
+ setValue("20",2);
+ setValue("30",2);
+ setValue("31",2);
+}
+function totheLeftRightTest(){
+ setValue("10",2);
+ setValue("11",2);
+ setValue("12",2);
+ setValue("13",2);
+ setValue("30",2);
+ setValue("00",2);
+ setValue("01",2);
+ setValue("02",2);
+ setValue("03",2);
+ setValue("31",2);
+}
+function Random16(){
+ return Math.floor(Math.random() * (15 - 0 + 1)) + 0;
+}
+function getCoordinates(){
+ var rand = Random16(),
+ coords = [[0,0],[0,1],[0,2],[0,3],
+		   [1,0],[1,1],[1,2],[1,3],
+		   [2,0],[2,1],[2,2],[2,3],
+		   [3,0],[3,1],[3,2],[3,3]],
+ pair = [];
+ pair = coords[rand];
+ for(var i=0;i<10000;i++){
+  if(v_table[pair[0],pair[1]]===0) break;
+  pair = coords[Random16()];
+ }
+ return pair;
+}
+function startValues(){
+ var coord = getCoordinates();
+ setValue(coord.join(""),2);
+ coord = getCoordinates();
+ setValue(coord.join(""),2);
+}
+$(document).ready(function(){ 
+ document.onkeydown = checkKey;
+ //totheLeftRightTest();
+ //totheUpTest();
+ startValues();
+});
+</script>
+</head>
+<body>
+<div id="table">
+ <div id="console"></div>
+ <div class="arow" id="0">
+  <div class="acell" id="00"></div>
+  <div class="acell" id="01"></div>
+  <div class="acell" id="02"></div>
+  <div class="acell" id="03"></div>
+ </div>
+ <div class="arow" id="1">
+  <div class="acell" id="10"></div>
+  <div class="acell" id="11"></div>
+  <div class="acell" id="12"></div>
+  <div class="acell" id="13"></div>
+ </div>
+ <div class="arow" id="2">
+  <div class="acell" id="20"></div>
+  <div class="acell" id="21"></div>
+  <div class="acell" id="22"></div>
+  <div class="acell" id="23"></div>
+ </div>
+ <div class="arow" id="3">
+  <div class="acell" id="30"></div>
+  <div class="acell" id="31"></div>
+  <div class="acell" id="32"></div>
+  <div class="acell" id="33"></div>
+ </div>
+</div>
+</body>
+</html>
