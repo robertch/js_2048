@@ -30,7 +30,7 @@ var KEY = {
    RIGHT: 39,
    DOWN	: 40
 },
-v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
+v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
 size = 4;
 function getDir(dir){
  var result = "";
@@ -152,7 +152,7 @@ function moveTable(direction){
   break; 
  }
  refreshScreen();
- setValue(getCoordinates().join(""),2);
+ setValue(getCoordinates_v_2().join(""),2);
  console.log(v_table.join(""));
 }
 function refreshScreen(){
@@ -192,10 +192,13 @@ function totheLeftRightTest(){
  setValue("03",2);
  setValue("31",2);
 }
+function RandomMax(max){
+ return Math.floor(Math.random() * (max - 0 + 1)) + 0;
+}
 function Random16(){
  return Math.floor(Math.random() * (15 - 0 + 1)) + 0;
 }
-function getCoordinates(){
+function getCoordinates_v_1(){
  var rand = Random16(),
  coords = [[0,0],[0,1],[0,2],[0,3],
 		   [1,0],[1,1],[1,2],[1,3],
@@ -209,10 +212,24 @@ function getCoordinates(){
  }
  return pair;
 }
+function getCoordinates_v_2(){
+ var empty_cells = emptyCells();
+ var rand = RandomMax(empty_cells.length),
+     pair = empty_cells[rand];
+ return pair;
+}
+function emptyCells(){
+ v_empty_cells=[];
+ for(var i=0;i<size;i++)
+  for(var j=0;j<size;j++)
+	if(v_table[i][j]===0)
+		v_empty_cells.push((i+","+j).split(","));
+ return v_empty_cells;
+}
 function startValues(){
- var coord = getCoordinates();
+ var coord = getCoordinates_v_2();
  setValue(coord.join(""),2);
- coord = getCoordinates();
+ coord = getCoordinates_v_2();
  setValue(coord.join(""),2);
 }
 $(document).ready(function(){ 
