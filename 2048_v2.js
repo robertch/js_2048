@@ -4,8 +4,8 @@ var theGame_2048 = function(){
   UP	: 38,
   RIGHT: 39,
   DOWN	: 40
- },v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
- size = 4;
+ },v_table = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+ size = 16;
  function getDir(dir){
   var result = "";
   switch(dir){
@@ -24,95 +24,31 @@ var theGame_2048 = function(){
   }
   return result;
  }
- function moveLeft_v_1(){
-  for(var i=0;i<size;i++){
-   for(var j=size;j--;){
-    if((j-1)>=0){
-     if(v_table[i][j-1]===v_table[i][j]){ 
-      v_table[i][j-1]*=2;
-      v_table[i][j]=0;
-     }else if(v_table[i][j-1]===0) {
-      v_table[i][j-1]=v_table[i][j];
-      v_table[i][j]=0;
-     }
-    }
+ function moveLeft(){
+  for(var i=0;i < size-1;i++){
+   if(v_table[i]===v_table[i+1] && (((i+1)%4)===0))){
+    v_table[i]*=2;
+    i++;
    }
-   for(var j=0;j<size;j++){
-    if(j<(size-1) && v_table[i][j]===0){
-      v_table[i][j]=v_table[i][j+1];
-      v_table[i][j+1]=0;
-    } 
+  }
+  for(var i=0;i < size-1;i++){
+   if(v_table[i]===0 && (((i+1)%4)===0)){
+     v_table[i]=v_table[i+1];
+     v_table[i+1]==0;
    }
   }
  }
  function moveRight(){
-  for(var i=0;i<size;i++){
-   for(var j=0;j<size;j++){
-    if((j+1)<size){
-     if(v_table[i][j+1]===v_table[i][j]){ 
-      v_table[i][j+1]*=2;
-      v_table[i][j]=0;
-     }
-    }
-   }
-   for(var j=0;j<size;j++){
-    if(j<(size-1) && v_table[i][j+1]===0){
-      v_table[i][j+1]=v_table[i][j];
-      v_table[i][j]=0;
-    } 
-   }
-  }
  }
  function moveUp(){
-  for(var i=size;i--;){
-   for(var j=0;j<size;j++){
-    if((i-1)>=0)
-     if(v_table[i][j]===v_table[i-1][j]){
-      v_table[i-1][j]*=2; 
-      v_table[i][j]=0;
-     }else if(v_table[i-1][j]===0){
-      v_table[i-1][j]=v_table[i][j];
-      v_table[i][j]=0;
-     }
-   }
-  }
-  for(var i=size;i--;){
-   for(var j=0;j<size;j++){
-     if((i-1)>=0 && v_table[i-1][j]===0) {
-       v_table[i-1][j]=v_table[i][j];
-       v_table[i][j]=0;
-     }
-   }
-  }
  }
  function moveDown(){
-  for(var i=0;i<size;i++){
-   for(var j=0;j<size;j++){
-    if((i+1)<size){
-     if(v_table[i+1][j]===v_table[i][j]){ 
-      v_table[i+1][j]*=2;
-      v_table[i][j]=0;
-     }else if(v_table[i+1][j]===0){
-      v_table[i+1][j]=v_table[i][j];
-      v_table[i][j]=0;
-     }
-    }
-   }
-  }
-  for(var i=0;i<size;i++){
-   for(var j=0;j<size;j++){
-    if((i+1)<size && v_table[i+1][j]===0){
-      v_table[i+1][j]=v_table[i][j];
-      v_table[i][j]=0;
-    }
-   }
-  }
  }
  function moveTable(direction){
   $('#console').text(getDir(direction));
    switch(direction){
    case KEY.LEFT:
-    moveLeft_v_1();   
+    moveLeft();   
    break; 
    case KEY.RIGHT:
     moveRight();
@@ -129,10 +65,9 @@ var theGame_2048 = function(){
   console.log(v_table.join(""));
  }
  function refreshScreen(){
-  for(var i=0;i<size;i++){
-   for(var j=size;j--;){
-    $("#"+i+""+j).text((v_table[i][j]==0 ? "":v_table[i][j]));
-   }
+  for(var i =0;i < size;i++){
+   var coord = Math.floor(i/4)+""+(i-Math.floor(i/4)*4);
+   setValue(coord,v_table[i]);
   }
  }
  function setValue(cell,value){

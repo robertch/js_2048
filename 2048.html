@@ -1,34 +1,14 @@
 <!doctype html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="2048.css">
 <script type="text/javascript" src="jquery/jquery-2.2.0.min.js"></script>
 <script type="text/javascript" src="2048.js"></script>
-<style>
-.arow{
- width: 	305px;
-}
-.acell{
- width: 	65px;
- height: 	50px;
- background-color: white;
- border: 	2px solid #8c7373;
- margin:	1px;
- float:		left;
- text-align:	center;
- font: 		25px Arial bold;
- padding-top:	18px;
-}
-#console{
- height: 	40px;
- width:  	305;
- font: 	 	25px Arial bold;
-}
-</style>
 <script type="text/javascript">
-	$(document).ready(function(){ 
-		 document.onkeydown = theGame_2048().checkKey;
-		 theGame_2048().start();
-	});
+ $(document).ready(function(){ 
+  document.onkeydown = theGame_2048().checkKey;
+  theGame_2048().start();
+ });
 </script>
 </head>
 <body>
