@@ -1,11 +1,11 @@
+var v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]];
 var theGame_2048 = function(){
  var KEY = {
   LEFT : 37,
   UP	: 38,
   RIGHT: 39,
   DOWN	: 40
- },v_table = [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],
- size = 4;
+ }, size = 4;
  function getDir(dir){
   var result = "";
   switch(dir){
@@ -23,6 +23,22 @@ var theGame_2048 = function(){
    break; 
   }
   return result;
+ }
+ function moveLeft_v_2(){
+  for(var i=0;i<size;i++){
+   for(var j=0;j<(size-1);j++){
+	if(v_table[i][j]===v_table[i][j+1]){
+	 v_table[i][j]*=2;
+	 v_table[i][j+1]=0;
+	}
+   }
+  for(var j=0;j<size;j++){
+    if(j<(size-1) && v_table[i][j]===0){
+      v_table[i][j]=v_table[i][j+1];
+      v_table[i][j+1]=0;
+    } 
+   }
+  }
  }
  function moveLeft_v_1(){
   for(var i=0;i<size;i++){
@@ -112,7 +128,7 @@ var theGame_2048 = function(){
   $('#console').text(getDir(direction));
    switch(direction){
    case KEY.LEFT:
-    moveLeft_v_1();   
+    moveLeft_v_2(); 
    break; 
    case KEY.RIGHT:
     moveRight();
@@ -126,7 +142,8 @@ var theGame_2048 = function(){
   }
   refreshScreen();
   setValue(getCoordinates_v_2().join(""),2);
-  console.log(v_table.join(""));
+  // $("#lista").text(v_table.join(""));
+  console.logv(v_table.join(""));
  }
  function refreshScreen(){
   for(var i=0;i<size;i++){
@@ -163,6 +180,12 @@ var theGame_2048 = function(){
   setValue("02",2);
   setValue("03",2);
   setValue("31",2);
+ }
+ function toTest_8422(){
+  setValue("00",8);
+  setValue("01",4);
+  setValue("02",2);
+  setValue("03",2);
  }
  function RandomMax(max){
   return Math.floor(Math.random() * (max - 0 + 1)) + 0;
@@ -205,7 +228,8 @@ var theGame_2048 = function(){
   setValue(coord.join(""),2);
  }
  function l_start(){
-  startValues();
+ // startValues();
+	 toTest_8422();
  }
  
  return {
