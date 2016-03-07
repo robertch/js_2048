@@ -63,13 +63,14 @@ var theGame_2048 = function(){
  }
  function moveRight_v_2(){
   for(var i=0;i<size;i++){
-   for(var j=0;j < (size-1);j++){
-    if(v_table[i][j+1]===v_table[i][j]){
+   for(var j=size;j--;){
+    if(j===0) break;
+    if(v_table[i][j-1]===v_table[i][j]){
      v_table[i][j]=0;
-     v_table[i][j+1]*=2;
+     v_table[i][j-1]*=2;
     }
-    if(v_table[i][j+1]===0){
-     v_table[i][j+1]=v_table[i][j];
+    if(v_table[i][j-1]===0){
+     v_table[i][j-1]=v_table[i][j];
      v_table[i][j]=0;
     }
    }

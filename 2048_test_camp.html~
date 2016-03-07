@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="2048.css">
+<script type="text/javascript" src="jquery/jquery-2.2.0.min.js"></script>
+<script type="text/javascript" src="2048.js"></script>
+<script type="text/javascript">
+ $(document).ready(function(){ 
+  document.onkeydown = theGame_2048().checkKey;
+  theGame_2048().start();
+ });
+</script>
+</head>
+<body>
+<div id="table">
+ <div id="console"></div>
+ <div class="arow" id="0">
+  <div class="acell" id="00"></div>
+  <div class="acell" id="01"></div>
+  <div class="acell" id="02"></div>
+  <div class="acell" id="03"></div>
+ </div>
+ <div class="arow" id="1">
+  <div class="acell" id="10"></div>
+  <div class="acell" id="11"></div>
+  <div class="acell" id="12"></div>
+  <div class="acell" id="13"></div>
+ </div>
+ <div class="arow" id="2">
+  <div class="acell" id="20"></div>
+  <div class="acell" id="21"></div>
+  <div class="acell" id="22"></div>
+  <div class="acell" id="23"></div>
+ </div>
+ <div class="arow" id="3">
+  <div class="acell" id="30"></div>
+  <div class="acell" id="31"></div>
+  <div class="acell" id="32"></div>
+  <div class="acell" id="33"></div>
+ </div>
+</div>
+<div>
+	<div><select id="lista" multiple></select></div>
+</div>
+</body>
+</html>
