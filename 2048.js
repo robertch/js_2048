@@ -61,6 +61,56 @@ var theGame_2048 = function(){
    }
   }
  }
+ function moveLeft_v_2(){
+    var x = 0,
+	    y =0,
+	    pos = 0,
+	    i = 0;
+
+	debug_writeVTableToConsole("start: ");
+	for (y = 0; y < v_table.length; y += 1) {
+	// znajdź pierwszą wolną pozycję w wierszu (od lewej)
+	  pos = (-1);
+	  for (x = 0; x < v_table[0].length; x += 1) {
+	   if (v_table[y][x] === 0) {
+	    pos = x;
+	     break;
+	   }
+	  // dosuń wszystkie klocki do wolnej pozycji
+	  if (pos >= 0) {
+	   i = 0;
+	   for (x = pos + 1; x <= v_table[0].length - 1; x += 1) {
+	    if (v_table[y][x] !== 0) {
+	      v_table[y][pos + i] = v_table[y][x];
+	      v_table[y][x] = 0;
+	      i += 1;
+	    }
+	  }
+	  }
+	}
+	//sprawdzamy od lewej jeżeli dwa klocki są takie same to je połączyć i resztę dosunąć
+	for (x = 1; x < v_table[0].length; x += 1) {
+	 if (v_table[y][x - 1] === v_table[y][x]) {
+	  v_table[y][x - 1] *= 2;
+	  v_table[y][x] = 0;
+	  pos = x;
+	  for (i = pos + 1 ; i < v_table[0].length; i += 1) {
+	    v_table[y][i - 1] = v_table[y][i];
+	  }
+	  v_table[y][v_table[0].length - 1] = 0;
+	  break;
+	 }
+	}
+   }
+	debug_writeVTableToConsole("koniec: ");
+  }
+ function debug_writeVTableToConsole(napis) {
+  var y = 0;
+  console.log(napis + new Date());
+  for (y = 0; y < v_table.length; y += 1) {
+   console.log(v_table[y]);
+  }
+ }
  function moveRight_v_2(){
   for(var i=0;i<size;i++){
    for(var j=0;j < (size-1);j++){
